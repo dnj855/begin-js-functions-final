@@ -7,6 +7,22 @@ const setTargetNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
+const restartGame = () => {
+  const playAgain = prompt("Do you want to play again? (Y/N): ");
+  if (playAgain.toLowerCase() === "y") {
+    console.log("\n\n");
+    game();
+    return;
+  } else if (playAgain.toLowerCase() === "n") {
+    console.log("Goodbye! 👋");
+    return;
+  } else {
+    console.log("🚫 Please enter a valid input (Y/N).");
+    restartGame();
+    return;
+  }
+};
+
 console.log(`Welcome to the Number Guessing Game! 🎮
 
 Rules:
@@ -46,11 +62,7 @@ const game = () => {
     console.log(
       `Congratulations ! The random number was indeed ${targetNumber}. You found it within ${attemptsAccount} attempts.`
     );
-    const playAgain = prompt("Do you want to play again? (Y/N): ");
-    if (playAgain.toLowerCase() === "y") {
-      game();
-      return;
-    }
+    restartGame();
   };
 
   gameProcess();
