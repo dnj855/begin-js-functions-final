@@ -7,19 +7,6 @@ const setTargetNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-const validateNumber = (attempt, targetNumber) => {
-  if (isNaN(attempt)) {
-    return "🚫 Please enter a valid number.";
-  }
-  if (attempt > targetNumber) {
-    return "📈 The entered number is ***too big***.";
-  }
-  if (attempt < targetNumber) {
-    return "📉 The entered number is ***too small***.";
-  }
-  return true;
-};
-
 console.log(`Welcome to the Number Guessing Game! 🎮
 
 Rules:
@@ -37,20 +24,32 @@ const game = () => {
   let attemptsAccount = 0;
 
   const gameProcess = () => {
-    const attempt = prompt("Enter a number: ");
-    const result = validateNumber(attempt, targetNumber);
+    const attempt = Number(prompt("Enter a number: "));
     attemptsAccount++;
-    if (typeof result === "boolean") {
+    if (!isNaN(attempt) && (attempt < MIN_VALUE || attempt > MAX_VALUE)) {
       console.log(
-        `Congratulations ! The random number was indeed ${targetNumber}. You found it within ${attemptsAccount} attempts.`
+        `🚫 Please enter a number between ${MIN_VALUE} and ${MAX_VALUE}.`
       );
-      const playAgain = prompt("Do you want to play again? (Y/N): ");
-      if (playAgain.toLowerCase() === "y") {
-        game();
-      }
-    } else {
-      console.log(result);
       gameProcess();
+      return;
+    }
+    if (attempt > targetNumber) {
+      console.log("📈 The entered number is too big.");
+      gameProcess();
+      return;
+    }
+    if (attempt < targetNumber) {
+      console.log("📉 The entered number is too small.");
+      gameProcess();
+      return;
+    }
+    console.log(
+      `Congratulations ! The random number was indeed ${targetNumber}. You found it within ${attemptsAccount} attempts.`
+    );
+    const playAgain = prompt("Do you want to play again? (Y/N): ");
+    if (playAgain.toLowerCase() === "y") {
+      game();
+      return;
     }
   };
 
